@@ -1,20 +1,18 @@
 require("dotenv").config();
 require("./config/database").connect();
 
+// setup express
 const express = require("express");
 const app = express();
-const User = require("./model/user"); // importing user context (model)
+
+// import routes
+const account = require("./routes/account");
 
 app.use(express.json());
+app.use("/account", account);
 
-// Register
-app.post("/register", (req, res) => {
-// our register logic goes here...
-});
-
-// Login
-app.post("/login", (req, res) => {
-// our login logic goes here
+app.get("/", (req, res) => {
+  res.send("Hello World");
 });
 
 module.exports = app;

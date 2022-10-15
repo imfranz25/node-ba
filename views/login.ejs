@@ -8,10 +8,18 @@
 </head>
 <body>
   <div>
-    <form action="#">
+    <form action="/account/login">
       <h1>Login</h1>
-      <input type="text" name="username" />
-      <input type="password" name="password" />
+      <label for="username">Username</label>
+      <br />
+      <input type="text" name="username" id="username" required />
+      <br />
+      <br />
+      <label for="password">Password</label>
+      <br />
+      <input type="password" name="password" id="password" required />
+      <br />
+      <br />
       <input type="submit" value="Login" />
     </form>
   </div>

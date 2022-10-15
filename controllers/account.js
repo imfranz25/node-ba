@@ -7,15 +7,19 @@ const createAccount = async (req, res) => {
 
   try {
     // Get user input
-    const { first_name, last_name, email, password } = req.body;
-
+    const { first_name, last_name, username, password, confirm_password } = req.body;
     // Validate user input
-    if (!(email && password && first_name && last_name)) {
-      res.status(400).send("All input is required");
+    if (!(username && password && confirm_password && first_name && last_name)) {
+      return res.status(400).send("All input is required");
+    }
+
+    // Validate Password and Confirm Password
+    if (password != confirm_password) {
+      return res.status(400).send("Password and Confirm Password doesn't match");
     }
 
     // Validate if user exist in our database
-    const oldUser = await User.findOne({ email });
+    const oldUser = await User.findOne({ username });
 
     if (oldUser) {
       return res.status(409).send("User Already Exist. Please Login");
@@ -28,13 +32,13 @@ const createAccount = async (req, res) => {
     const user = await User.create({
       first_name,
       last_name,
-      email: email.toLowerCase(),
+      username: username.toLowerCase(),
       password: encryptedPassword,
     });
 
     // Create token
     const token = jwt.sign(
-      { user_id: user._id, email },
+      { user_id: user._id, username },
       process.env.TOKEN_KEY,
       { expiresIn: "2h", }
     );
@@ -42,8 +46,10 @@ const createAccount = async (req, res) => {
     // save user token
     user.token = token;
 
+    // redirect to Login
+    res.redirect("/login")
     // return new user
-    res.status(201).json(user);
+    // res.status(201).json(user);
 
   } catch (err) {
     console.log(err);

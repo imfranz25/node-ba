@@ -9,13 +9,27 @@ const app = express();
 // import routes
 const account = require("./routes/account");
 
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
 app.use( express.json() );
 app.use( express.urlencoded({ extended: false }) );
 app.use( express.static(path.join(__dirname, "public")) );
+
+// API -> Account (register/login)
 app.use("/account", account);
 
+// Routes
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.render("index");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.get("/register", (req, res) => {
+  res.render("register");
 });
 
 module.exports = app;

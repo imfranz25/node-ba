@@ -7,6 +7,12 @@
   <title>Login</title>
 </head>
 <body>
+  <%  try { if (status) { %> 
+    <div>
+      Login <%- status  %> 
+    </div>
+  <%  }} catch { /* Do nothing */ } %> 
+
   <div>
     <form action="/account/login" method="post">
       <h1>Login</h1>

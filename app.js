@@ -5,9 +5,9 @@ require('./config/database').connect();
 // setup express
 const express = require('express');
 const path = require('path');
+const auth = require('./middleware/auth');
 
 const app = express();
-
 // import routes
 const account = require('./routes/account');
 
@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 
 // Login Page
 app.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login', req.query);
 });
 
 // Sign Up Page
@@ -37,10 +37,11 @@ app.get('/register', (req, res) => {
 });
 
 // Sign Up Page
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', auth, (req, res) => {
   res.render('dashboard');
 });
 
+// 404 Page - get all (*) invalid links that doesn't match other routes
 app.get('*', (req, res) => {
   res.render('404');
 });

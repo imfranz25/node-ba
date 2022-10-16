@@ -11,19 +11,19 @@ const createAccount = async (req, res) => {
     } = req.body;
     // Validate user input
     if (!(username && password && confirmPassword && firstName && lastName)) {
-      return res.status(400).send('All input is required');
+      return res.redirect('/register?status=failed');
     }
 
     // Validate Password and Confirm Password
     if (password !== confirmPassword) {
-      return res.status(400).send("Password and Confirm Password doesn't match");
+      return res.redirect('/register?match=true');
     }
 
     // Validate if user exist in our database
     const oldUser = await User.findOne({ username });
 
     if (oldUser) {
-      return res.status(409).send('User Already Exist. Please Login');
+      return res.redirect('/register?exist=true');
     }
 
     // Encrypt user password
@@ -49,49 +49,56 @@ const createAccount = async (req, res) => {
     user.token = token;
 
     // redirect to Login
-    res.redirect('/login');
-    // return new user
-    // res.status(201).json(user);
+    res.redirect('/login?status=created');
   } catch (err) {
-    // console.log(err);
+    console.log(err);
   }
 };
 // eslint-disable-next-line consistent-return
 const validateUser = async (req, res) => {
   try {
-    console.log(req.body);
-
     // Get user input
     const { username, password } = req.body;
 
     // Validate user input
     if (!(username && password)) {
-      return res.status(400).send('All input is required');
+      return res.redirect('/login?status=failed');
     }
+
     // Validate if user exist in our database
     const user = await User.findOne({ username });
-    const isPasswordMatched = await bcrypt.compare(password, user.password);
 
-    if (user && isPasswordMatched) {
-      // Create token
-      const token = jwt.sign(
-        // eslint-disable-next-line no-underscore-dangle
-        { user_id: user._id, username },
-        process.env.TOKEN_KEY,
-        {
-          expiresIn: '2h',
-        },
-      );
+    // Validate Password if user is found
+    if (user) {
+      const isPasswordMatched = await bcrypt.compare(password, user.password);
 
-      // save user token
-      user.token = token;
+      if (isPasswordMatched) {
+        // Create token
+        const token = jwt.sign(
+          // eslint-disable-next-line no-underscore-dangle
+          { user_id: user._id, username },
+          process.env.TOKEN_KEY,
+          {
+            expiresIn: '2h',
+          },
+        );
 
-      // user
-      // res.status(200).json(user);
-      res.redirect('/dashboard');
-    } else {
-      res.status(400).send('Invalid Credentials');
+        // save user token
+        user.token = token;
+
+        // set cookie
+        res.cookie('token', token, {
+          maxAge: 2 * 60 * 60 * 1000, // 2hrs
+          secure: true,
+          samesite: true,
+        });
+
+        // redirect it to dashboard with the set cookies
+        return res.redirect('/dashboard');
+      }
     }
+
+    res.redirect('/login?status=failed');
   } catch (err) {
     console.log(err);
   }

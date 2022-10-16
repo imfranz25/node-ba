@@ -88,7 +88,6 @@ const validateUser = async (req, res) => {
     }
     res.status(400).send('Invalid Credentials');
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.log(err);
   }
 };

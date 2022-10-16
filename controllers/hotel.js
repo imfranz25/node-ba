@@ -32,8 +32,15 @@ const addHotel = async (req, res) => {
   res.redirect('/dashboard');
 };
 
+const deleteHotel = async (req, res) => {
+  const { hotelID } = req.body;
+  const isDeleted = await Hotel.findByIdAndDelete(hotelID);
+  res.status(202).json({ msg: 'Record Delete Successfully' });
+};
+
 module.exports = {
   addHotel,
   getHotels,
   addHotelForm,
+  deleteHotel,
 };

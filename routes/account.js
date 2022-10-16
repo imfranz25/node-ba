@@ -1,5 +1,5 @@
-const express = require("express");
-const { createAccount } = require("../controllers/account.js");
+const express = require('express');
+const { createAccount } = require('../controllers/account');
 
 const router = express.Router();
 

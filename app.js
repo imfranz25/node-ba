@@ -1,6 +1,6 @@
 // environment variables and database connection - configs
 require("dotenv").config();
-require("./config/database").connect();
+require('./config/database').connect();
 
 // setup express
 const express = require("express");

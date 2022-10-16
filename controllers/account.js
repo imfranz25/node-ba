@@ -1,20 +1,21 @@
-const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const User = require("./../models/user"); 
+const User = require('../models/user');
 
+// eslint-disable-next-line consistent-return
 const createAccount = async (req, res) => {
-
   try {
     // Get user input
-    const { first_name, last_name, username, password, confirm_password } = req.body;
+    const {
+      firstName, lastName, username, password, confirmPassword,
+    } = req.body;
     // Validate user input
-    if (!(username && password && confirm_password && first_name && last_name)) {
-      return res.status(400).send("All input is required");
+    if (!(username && password && confirmPassword && firstName && lastName)) {
+      return res.status(400).send('All input is required');
     }
 
     // Validate Password and Confirm Password
-    if (password != confirm_password) {
+    if (password !== confirmPassword) {
       return res.status(400).send("Password and Confirm Password doesn't match");
     }
 
@@ -22,7 +23,7 @@ const createAccount = async (req, res) => {
     const oldUser = await User.findOne({ username });
 
     if (oldUser) {
-      return res.status(409).send("User Already Exist. Please Login");
+      return res.status(409).send('User Already Exist. Please Login');
     }
 
     // Encrypt user password
@@ -30,33 +31,69 @@ const createAccount = async (req, res) => {
 
     // Create user in our database
     const user = await User.create({
-      first_name,
-      last_name,
+      first_name: firstName,
+      last_name: lastName,
       username: username.toLowerCase(),
       password: encryptedPassword,
     });
 
     // Create token
     const token = jwt.sign(
+      // eslint-disable-next-line no-underscore-dangle
       { user_id: user._id, username },
       process.env.TOKEN_KEY,
-      { expiresIn: "2h", }
+      { expiresIn: '2h' },
     );
 
     // save user token
     user.token = token;
 
     // redirect to Login
-    res.redirect("/login")
+    res.redirect('/login');
     // return new user
     // res.status(201).json(user);
-
   } catch (err) {
+    // console.log(err);
+  }
+};
+const validateUser = async (req, res) => {
+  try {
+    // Get user input
+    const { username, password } = req.body;
+
+    // Validate user input
+    if (!(username && password)) {
+      res.status(400).send('All input is required');
+    }
+    // Validate if user exist in our database
+    const user = await User.findOne({ username });
+    const isPasswordMatched = await bcrypt.compare(password, user.password);
+
+    if (user && isPasswordMatched) {
+      // Create token
+      const token = jwt.sign(
+        // eslint-disable-next-line no-underscore-dangle
+        { user_id: user._id, username },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: '2h',
+        },
+      );
+
+      // save user token
+      user.token = token;
+
+      // user
+      res.status(200).json(user);
+    }
+    res.status(400).send('Invalid Credentials');
+  } catch (err) {
+    // eslint-disable-next-line no-console
     console.log(err);
   }
-}
-
+};
 
 module.exports = {
- createAccount,
-}
+  createAccount,
+  validateUser,
+};

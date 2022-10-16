@@ -56,14 +56,17 @@ const createAccount = async (req, res) => {
     // console.log(err);
   }
 };
+// eslint-disable-next-line consistent-return
 const validateUser = async (req, res) => {
   try {
+    console.log(req.body);
+
     // Get user input
     const { username, password } = req.body;
 
     // Validate user input
     if (!(username && password)) {
-      res.status(400).send('All input is required');
+      return res.status(400).send('All input is required');
     }
     // Validate if user exist in our database
     const user = await User.findOne({ username });
@@ -84,9 +87,11 @@ const validateUser = async (req, res) => {
       user.token = token;
 
       // user
-      res.status(200).json(user);
+      // res.status(200).json(user);
+      res.redirect('/dashboard');
+    } else {
+      res.status(400).send('Invalid Credentials');
     }
-    res.status(400).send('Invalid Credentials');
   } catch (err) {
     console.log(err);
   }

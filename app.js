@@ -8,8 +8,11 @@ const path = require('path');
 const verifyToken = require('./middleware/auth');
 
 const app = express();
+
 // import routes
 const account = require('./routes/account');
+const hotel = require('./routes/hotel');
+const { getHotels } = require('./controllers/hotel');
 
 // express configs
 app.set('view engine', 'ejs');
@@ -20,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // API -> Account (register/login)
 app.use('/account', account);
+app.use('/hotel', hotel);
 
 // Landing Page
 app.get('/', (req, res) => {
@@ -37,10 +41,8 @@ app.get('/register', (req, res) => {
   res.render('register');
 });
 
-// Sign Up Page
-app.get('/dashboard', verifyToken, (req, res) => {
-  res.render('dashboard');
-});
+// Dashboard Page -> Hotel List
+app.get('/dashboard', verifyToken, getHotels);
 
 // Logout
 app.get('/logout', (req, res) => {

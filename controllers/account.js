@@ -94,7 +94,7 @@ const validateUser = async (req, res) => {
         });
 
         // eslint-disable-next-line no-underscore-dangle
-        res.cookie('id', user._id, {
+        res.cookie('username', user.username, {
           maxAge: 2 * 60 * 60 * 1000, // 2hrs
           secure: true,
           samesite: true,

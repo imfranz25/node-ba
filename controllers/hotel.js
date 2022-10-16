@@ -1,4 +1,5 @@
 const Hotel = require('../models/hotel');
+const getcookie = require('./getcookie');
 
 const getHotels = async (req, res) => {
   const hotels = await Hotel.find();
@@ -10,9 +11,10 @@ const addHotelForm = async (req, res) => {
 };
 
 const addHotel = async (req, res) => {
+  const uploader = getcookie(req).username;
+
   const {
     hotelName,
-    uploader,
     description,
     address,
     image,

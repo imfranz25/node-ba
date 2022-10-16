@@ -5,9 +5,12 @@ require('./config/database').connect();
 // setup express
 const express = require('express');
 const path = require('path');
-const verifyToken = require('./middleware/auth');
 
 const app = express();
+
+// Middlewares
+const verifyToken = require('./middleware/auth');
+const deleteCookie = require('./middleware/delete-cookie');
 
 // import routes
 const account = require('./routes/account');
@@ -45,8 +48,7 @@ app.get('/register', (req, res) => {
 app.get('/dashboard', verifyToken, getHotels);
 
 // Logout
-app.get('/logout', (req, res) => {
-  res.clearCookie('token');
+app.get('/logout', deleteCookie, (req, res) => {
   res.redirect('login');
 });
 

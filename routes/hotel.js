@@ -1,10 +1,11 @@
 const express = require('express');
-// const auth = require('../middleware/auth');
-const { addHotel } = require('../controllers/hotel');
+const auth = require('../middleware/auth');
+const { addHotel, addHotelForm } = require('../controllers/hotel');
 
 const router = express.Router();
 
 // ROUTING CALLS for /account
-router.post('/add', addHotel);
+router.get('/add', auth, addHotelForm);
+router.post('/add', auth, addHotel);
 
 module.exports = router;

@@ -86,8 +86,15 @@ const validateUser = async (req, res) => {
         // save user token
         user.token = token;
 
-        // set cookie
+        // set cookies
         res.cookie('token', token, {
+          maxAge: 2 * 60 * 60 * 1000, // 2hrs
+          secure: true,
+          samesite: true,
+        });
+
+        // eslint-disable-next-line no-underscore-dangle
+        res.cookie('id', user._id, {
           maxAge: 2 * 60 * 60 * 1000, // 2hrs
           secure: true,
           samesite: true,

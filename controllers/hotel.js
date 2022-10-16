@@ -5,6 +5,10 @@ const getHotels = async (req, res) => {
   res.render('dashboard', { hotels });
 };
 
+const addHotelForm = async (req, res) => {
+  res.render('add-hotel');
+};
+
 const addHotel = async (req, res) => {
   const {
     hotelName,
@@ -13,8 +17,6 @@ const addHotel = async (req, res) => {
     address,
     image,
   } = req.body;
-
-  console.log(req.body);
 
   // eslint-disable-next-line no-unused-vars
   const newHotel = await Hotel.create({
@@ -31,4 +33,5 @@ const addHotel = async (req, res) => {
 module.exports = {
   addHotel,
   getHotels,
+  addHotelForm,
 };

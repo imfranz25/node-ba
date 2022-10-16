@@ -1,0 +1,12 @@
+.hotel-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.hotel-box {
+  background-color: azure;
+  border: 1px solid cyan;
+  width: 200px;
+  padding: 20px;
+  margin: 10px;
+}

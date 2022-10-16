@@ -5,7 +5,7 @@ require('./config/database').connect();
 // setup express
 const express = require('express');
 const path = require('path');
-const auth = require('./middleware/auth');
+const verifyToken = require('./middleware/auth');
 
 const app = express();
 // import routes
@@ -28,7 +28,8 @@ app.get('/', (req, res) => {
 
 // Login Page
 app.get('/login', (req, res) => {
-  res.render('login', req.query);
+  const status = req.query;
+  res.render('login', status);
 });
 
 // Sign Up Page
@@ -37,8 +38,14 @@ app.get('/register', (req, res) => {
 });
 
 // Sign Up Page
-app.get('/dashboard', auth, (req, res) => {
+app.get('/dashboard', verifyToken, (req, res) => {
   res.render('dashboard');
+});
+
+// Logout
+app.get('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.redirect('login');
 });
 
 // 404 Page - get all (*) invalid links that doesn't match other routes

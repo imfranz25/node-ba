@@ -7,7 +7,6 @@ const config = process.env;
  * @param {object} req
  * @returns {array}
  */
-
 function getcookie(req) {
   const { headers: { cookie } } = req;
   try {

@@ -2,11 +2,7 @@
 <html lang="en">
 <%- include('./partials/head.ejs') %> 
 <body>
-  <nav>
-    <a href="/dashboard">Home</a>
-    <a href="/hotel/add">Add Hotel</a>
-    <a href="/logout">Logout</a>
-  </nav>
+  <%- include('./partials/head.ejs') %> 
   <h1>Welcome to Hotel Maniac</h1>
   
   <div class="hotel-container">
@@ -17,8 +13,9 @@
         <h5>Uploaded By: <%- hotel.uploader %></h5>
         <h5>Date Posted: <%- hotel.date_posted %></h5>
         <label>Address: <%- hotel.address %></label>
-        <p><%- hotel.description %></p>
+        <p><%- hotel.description.slice(0,10) %>...</p>
         <button onclick="deleteHotel(this.value)" value="<%- hotel._id %>">Delete</button>
+        <!-- <a href="/hotel/view/<%= hotel._id %> ">View Details</a> -->
       </div>
     <% } %> 
   </div>

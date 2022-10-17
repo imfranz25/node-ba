@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const hotelSchema = new mongoose.Schema({
   hotel_name: { type: String, default: null },
   uploader: { type: String, default: null },
   description: { type: String, default: null },
@@ -10,4 +10,4 @@ const userSchema = new mongoose.Schema({
   date_posted: { type: Date, default: new Date() },
 });
 
-module.exports = mongoose.model('hotel', userSchema);
+module.exports = mongoose.model('hotel', hotelSchema);

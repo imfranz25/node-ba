@@ -38,9 +38,17 @@ const deleteHotel = async (req, res) => {
   res.status(202).json({ msg: 'Record Delete Successfully' });
 };
 
+const viewHotel = async (req, res) => {
+  const { id } = req.params;
+  const hotel = await Hotel.findById(id);
+  console.log(hotel);
+  res.render('view-hotel');
+};
+
 module.exports = {
   addHotel,
   getHotels,
   addHotelForm,
   deleteHotel,
+  viewHotel,
 };

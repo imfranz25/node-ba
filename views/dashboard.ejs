@@ -14,13 +14,9 @@
         <h5>Date Posted: <%- hotel.date_posted %></h5>
         <label>Address: <%- hotel.address %></label>
         <p><%- hotel.description.slice(0,10) %>...</p>
-        <!-- <button onclick="deleteHotel(this.value)" value="<%- hotel._id %>">Delete</button> -->
         <a href="/hotel/view/<%= hotel._id %> ">View Details</a>
       </div>
     <% } %> 
   </div>
-
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="js/dashboard.js" defer></script>
 </body>
 </html>

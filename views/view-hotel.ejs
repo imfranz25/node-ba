@@ -12,8 +12,28 @@
     <h5>Date Posted: <%- hotel.date_posted %></h5>
     <label>Address: <%- hotel.address %></label>
     <p><%- hotel.description %></p>
-    <!-- <button onclick="deleteHotel(this.value)" value="<%- hotel._id %>">Delete</button> -->
+    <button onclick="deleteHotel(this.value)" value="<%- hotel._id %>">Delete</button>
     <button onclick="alert(this.value)" value="<%- hotel._id %>">Update</button>
   </div>
+  
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="js/test.js"></script>
+  <script>
+    function deleteHotel(hotelID) {
+      const confirmDelete = confirm('Are you sure you to delete this record?');
+
+      if (confirmDelete) {
+        axios
+          .post('/hotel/delete', { hotelID })
+          .then((response) => {
+            location.reload();
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    }
+  </script>
 </body>
 </html>

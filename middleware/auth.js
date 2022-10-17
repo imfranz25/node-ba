@@ -7,14 +7,16 @@ const verifyToken = (req, res, next) => {
   const token = req.body.token || req.query.token || req.headers['x-access-token'] || getcookie(req).token;
 
   if (!token) {
-    return res.redirect('login');
+    return res.redirect(301, 'login');
   }
 
   try {
     const decoded = jwt.verify(token, config.TOKEN_KEY);
     req.user = decoded;
   } catch (err) {
-    return res.redirect('login');
+    res.clearCookie('token');
+    res.clearCookie('username');
+    return res.redirect(301, 'login');
   }
   return next();
 };

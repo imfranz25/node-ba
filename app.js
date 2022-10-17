@@ -49,7 +49,7 @@ app.get('/dashboard', verifyToken, getHotels);
 
 // Logout
 app.get('/logout', deleteCookie, (req, res) => {
-  res.redirect('login', { title: 'Login' });
+  res.redirect('login');
 });
 
 // 404 Page - get all (*) invalid links that doesn't match other routes

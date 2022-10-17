@@ -1,6 +1,6 @@
 const deleteCookie = (req, res, next) => {
   res.clearCookie('token');
-  res.clearCookie('id');
+  res.clearCookie('username');
   return next();
 };
 

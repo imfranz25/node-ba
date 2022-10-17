@@ -3,5 +3,17 @@
 <%- include('./partials/head.ejs') %> 
 <body>
   <%- include('./partials/nav.ejs') %> 
+  <br />
+  <br />
+  <div class="hotel-box">
+    <img src="<%- hotel.image %>" alt="<%- hotel.hotel_name %>" width="100" height="80" />
+    <h3><%- hotel.hotel_name %></h3>
+    <h5>Uploaded By: <%- hotel.uploader %></h5>
+    <h5>Date Posted: <%- hotel.date_posted %></h5>
+    <label>Address: <%- hotel.address %></label>
+    <p><%- hotel.description %></p>
+    <!-- <button onclick="deleteHotel(this.value)" value="<%- hotel._id %>">Delete</button> -->
+    <button onclick="alert(this.value)" value="<%- hotel._id %>">Update</button>
+  </div>
 </body>
 </html>

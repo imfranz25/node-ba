@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const Hotel = require('../models/hotel');
 const getcookie = require('./getcookie');
 
@@ -13,12 +15,7 @@ const addHotelForm = async (req, res) => {
 const addHotel = async (req, res) => {
   const uploader = getcookie(req).username;
 
-  const {
-    hotelName,
-    description,
-    address,
-    image,
-  } = req.body;
+  const { hotelName, description, address, image } = req.body;
 
   // eslint-disable-next-line no-unused-vars
   const newHotel = await Hotel.create({
@@ -38,11 +35,18 @@ const deleteHotel = async (req, res) => {
   res.status(202).json({ msg: 'Record Delete Successfully' });
 };
 
+// eslint-disable-next-line consistent-return
 const viewHotel = async (req, res) => {
   const { id } = req.params;
-  const hotel = await Hotel.findById(id);
-  console.log(hotel);
-  res.render('view-hotel');
+
+  if (mongoose.isValidObjectId(id)) {
+    const hotel = await Hotel.findById(id);
+    if (hotel) {
+      return res.render('view-hotel', { title: hotel.hotel_name, hotel });
+    }
+  }
+
+  res.redirect('/dashboard');
 };
 
 module.exports = {

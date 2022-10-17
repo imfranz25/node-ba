@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
@@ -6,9 +7,7 @@ const User = require('../models/user');
 const createAccount = async (req, res) => {
   try {
     // Get user input
-    const {
-      firstName, lastName, username, password, confirmPassword,
-    } = req.body;
+    const { firstName, lastName, username, password, confirmPassword } = req.body;
     // Validate user input
     if (!(username && password && confirmPassword && firstName && lastName)) {
       return res.redirect('/register?status=failed');
@@ -38,12 +37,9 @@ const createAccount = async (req, res) => {
     });
 
     // Create token
-    const token = jwt.sign(
-      // eslint-disable-next-line no-underscore-dangle
-      { user_id: user._id, username },
-      process.env.TOKEN_KEY,
-      { expiresIn: '2h' },
-    );
+    const token = jwt.sign({ user_id: user._id, username }, process.env.TOKEN_KEY, {
+      expiresIn: '2h',
+    });
 
     // save user token
     user.token = token;
@@ -80,7 +76,7 @@ const validateUser = async (req, res) => {
           process.env.TOKEN_KEY,
           {
             expiresIn: '2h',
-          },
+          }
         );
 
         // save user token

@@ -3,11 +3,11 @@ const getcookie = require('./getcookie');
 
 const getHotels = async (req, res) => {
   const hotels = await Hotel.find();
-  res.render('dashboard', { hotels });
+  res.render('dashboard', { title: 'Dashboard', hotels });
 };
 
 const addHotelForm = async (req, res) => {
-  res.render('add-hotel');
+  res.render('add-hotel', { title: 'Add Hotel' });
 };
 
 const addHotel = async (req, res) => {
@@ -34,7 +34,7 @@ const addHotel = async (req, res) => {
 
 const deleteHotel = async (req, res) => {
   const { hotelID } = req.body;
-  const isDeleted = await Hotel.findByIdAndDelete(hotelID);
+  await Hotel.findByIdAndDelete(hotelID);
   res.status(202).json({ msg: 'Record Delete Successfully' });
 };
 

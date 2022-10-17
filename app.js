@@ -30,18 +30,18 @@ app.use('/hotel', hotel);
 
 // Landing Page
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('index', { title: 'Home' });
 });
 
 // Login Page
 app.get('/login', (req, res) => {
-  const status = req.query;
-  res.render('login', status);
+  const { status } = req.query;
+  res.render('login', { title: 'Home', status });
 });
 
 // Sign Up Page
 app.get('/register', (req, res) => {
-  res.render('register');
+  res.render('register', { title: 'Register' });
 });
 
 // Dashboard Page -> Hotel List
@@ -49,12 +49,12 @@ app.get('/dashboard', verifyToken, getHotels);
 
 // Logout
 app.get('/logout', deleteCookie, (req, res) => {
-  res.redirect('login');
+  res.redirect('login', { title: 'Login' });
 });
 
 // 404 Page - get all (*) invalid links that doesn't match other routes
 app.get('*', (req, res) => {
-  res.render('404');
+  res.render('404', { title: '404 Page not Found' });
 });
 
 module.exports = app;
